@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
         Cart finalCart = user.getCart();
         productInOrders.forEach(productInOrder -> {
             Set<ProductInOrder> set = finalCart.getProducts();
-            Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductId().equals(productInOrder.getProductId())).findFirst();
+            Optional<ProductInOrder> old = set.stream().filter(e -> e.getProductId()==(productInOrder.getProductId())).findFirst();
             ProductInOrder prod;
             if (old.isPresent()) {
                 prod = old.get();

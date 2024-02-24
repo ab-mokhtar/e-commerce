@@ -32,7 +32,7 @@ public class ProductInOrder {
 
 
     @NotEmpty
-    private String productId;
+    private int productId;
 
 
     @NotEmpty

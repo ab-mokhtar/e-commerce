@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     CategoryService categoryService;
 
     @Override
-    public ProductInfo findOne(String productId) {
+    public ProductInfo findOne(int productId) {
 
         ProductInfo productInfo = productInfoRepository.findByProductId(productId);
         return productInfo;
@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void increaseStock(String productId, int amount) {
+    public void increaseStock(int productId, int amount) {
         ProductInfo productInfo = findOne(productId);
 
 
@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void decreaseStock(String productId, int amount) {
+    public void decreaseStock(int productId, int amount) {
         ProductInfo productInfo = findOne(productId);
 
 
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductInfo offSale(String productId) {
+    public ProductInfo offSale(int productId) {
         ProductInfo productInfo = findOne(productId);
 
         if (productInfo.getProductStatus() == ProductStatusEnum.DOWN.getCode()) {
@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductInfo onSale(String productId) {
+    public ProductInfo onSale(int productId) {
         ProductInfo productInfo = findOne(productId);
 
         if (productInfo.getProductStatus() == ProductStatusEnum.UP.getCode()) {
@@ -110,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(String productId) {
+    public void delete(int productId) {
         ProductInfo productInfo = findOne(productId);
         productInfoRepository.delete(productInfo);
 

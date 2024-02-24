@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
-    ProductInfo findOne(String productId);
+    ProductInfo findOne(int productId);
 
     // All selling products
     Page<ProductInfo> findUpAll(Pageable pageable);
@@ -18,19 +18,19 @@ public interface ProductService {
     Page<ProductInfo> findAllInCategory(Integer categoryType, Pageable pageable);
 
     // increase stock
-    void increaseStock(String productId, int amount);
+    void increaseStock(int productId, int amount);
 
     //decrease stock
-    void decreaseStock(String productId, int amount);
+    void decreaseStock(int productId, int amount);
 
-    ProductInfo offSale(String productId);
+    ProductInfo offSale(int productId);
 
-    ProductInfo onSale(String productId);
+    ProductInfo onSale(int productId);
 
     ProductInfo update(ProductInfo productInfo);
     ProductInfo save(ProductInfo productInfo);
 
-    void delete(String productId);
+    void delete(int productId);
 
 
 }

@@ -1,20 +1,24 @@
 package com.backend.ecommerce.api;
 
 
+import com.backend.ecommerce.config.FileUploadUtil;
 import com.backend.ecommerce.entity.ProductInfo;
 import com.backend.ecommerce.service.CategoryService;
 import com.backend.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 public class ProductController {
     @Autowired
@@ -34,7 +38,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{productId}")
-    public ProductInfo showOne(@PathVariable("productId") String productId) {
+    public ProductInfo showOne(@PathVariable("productId") int productId) {
 
         ProductInfo productInfo = productService.findOne(productId);
 
@@ -46,7 +50,7 @@ public class ProductController {
         return productInfo;
     }
 
-    @PostMapping("/seller/product/new")
+    @PostMapping(value = "/product" )
     public ResponseEntity create(@Valid @RequestBody ProductInfo product,
                                  BindingResult bindingResult) {
         ProductInfo productIdExists = productService.findOne(product.getProductId());
@@ -58,9 +62,26 @@ public class ProductController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult);
         }
-        return ResponseEntity.ok(productService.save(product));
-    }
 
+        return ResponseEntity.ok(productService.save(product).getProductId());
+    }
+    @PostMapping(value = "/product/image/{id}" )
+    public ResponseEntity create( @PathVariable int id,
+                                 @RequestParam("file") MultipartFile multipartFile) {
+        ProductInfo p = productService.findOne(id);
+
+        System.err.println("error "+multipartFile.getSize());
+        if(!multipartFile.isEmpty()){
+            String orgFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String ext = orgFileName.substring(orgFileName.lastIndexOf("."));
+            String uploadDir = "/Applications/XAMPP/xamppfiles/htdocs/productsImgs/";
+            String fileName = "product-"+p.getProductId()+ext;
+            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            p.setProductIcon("http://127.0.0.1/productsImgs/"+fileName);
+
+        }
+        return ResponseEntity.ok(productService.save(p).getProductId());
+    }
     @PutMapping("/seller/product/{id}/edit")
     public ResponseEntity edit(@PathVariable("id") String productId,
                                @Valid @RequestBody ProductInfo product,
@@ -76,7 +97,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/seller/product/{id}/delete")
-    public ResponseEntity delete(@PathVariable("id") String productId) {
+    public ResponseEntity delete(@PathVariable("id") int productId) {
         productService.delete(productId);
         return ResponseEntity.ok().build();
     }

@@ -7,6 +7,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,7 +21,8 @@ import java.util.Date;
 @DynamicUpdate
 public class ProductInfo implements Serializable {
     @Id
-    private String productId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int productId;
 
     @NotNull
     private String productName;
