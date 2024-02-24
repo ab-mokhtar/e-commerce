@@ -82,21 +82,16 @@ public class ProductController {
         }
         return ResponseEntity.ok(productService.save(p).getProductId());
     }
-    @PutMapping("/seller/product/{id}/edit")
-    public ResponseEntity edit(@PathVariable("id") String productId,
+    @PutMapping("/product/edit/{id}")
+    public ResponseEntity edit(@PathVariable("id") int productId,
                                @Valid @RequestBody ProductInfo product,
                                BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult);
-        }
-        if (!productId.equals(product.getProductId())) {
-            return ResponseEntity.badRequest().body("Id Not Matched");
-        }
+
 
         return ResponseEntity.ok(productService.update(product));
     }
 
-    @DeleteMapping("/seller/product/{id}/delete")
+    @DeleteMapping("/product/delete/{id}")
     public ResponseEntity delete(@PathVariable("id") int productId) {
         productService.delete(productId);
         return ResponseEntity.ok().build();
