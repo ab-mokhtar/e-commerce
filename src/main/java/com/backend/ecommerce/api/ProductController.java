@@ -74,6 +74,7 @@ public class ProductController {
         if(!multipartFile.isEmpty()){
             String orgFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             String ext = orgFileName.substring(orgFileName.lastIndexOf("."));
+            // update path of your xampp
             String uploadDir = "/Applications/XAMPP/xamppfiles/htdocs/productsImgs/";
             String fileName = "product-"+p.getProductId()+ext;
             FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
